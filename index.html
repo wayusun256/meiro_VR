@@ -159,41 +159,41 @@
 
   import './CorkFromTheEye.js';
  
-AFRAME.registerComponent('vr-trigger-shoot', {
+AFRAME.registerComponent('vr-trigger-shoot', { //トリガー操作コンポーネント
   init: function () {
     this.prevPressed = false;
   },
-
+ 
   tick: function () {
-    const rightHand = document.querySelector('#rightHand');
+    const rightHand = document.querySelector('[oculus-touch-controls][hand="right"]');
     if (!rightHand) return;
-
+ 
     const controls = rightHand.components['oculus-touch-controls'];
     if (!controls || !controls.controller) return;
-
+ 
     const gamepad = controls.controller.gamepad;
-    if (!gamepad || !gamepad.buttons) return;
-
-    const pressed = gamepad.buttons[0].pressed; // 右トリガー
-
+    if (!gamepad) return;
+ 
+    const pressed = gamepad.buttons[0].pressed; // トリガー
+ 
+    // 押した瞬間だけ
     if (pressed && !this.prevPressed) {
       this.fire();
     }
-
+ 
     this.prevPressed = pressed;
   },
-
+ 
   fire: function () {
     const camera = document.querySelector('#camera');
     if (!camera) return;
-
+ 
     const shooter = camera.components['cork-shooter'];
     if (shooter && shooter.shootCork) {
-      shooter.shootCork();
+      shooter.shootCork(); // ← スペースキーと完全に同じ処理
     }
   }
 });
-
  
 
 
@@ -243,4 +243,5 @@ const itemPositions = [
 
 </script>
 </body>
+
 </html>
